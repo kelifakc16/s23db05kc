@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  p  Images of Mountains 
+  - var image_names = ["m1.png", "m2.png", "m3.png","m4.png", "m5.png"];
+    div(style="display:flex")
+     - for(let j=0;j<3;j++){
+        - let rdx=Math.floor(Math.random()*5)
+        div(style="height:210px; width:320px; margin-left: 15px")
+          img(src=`/images/${image_names[rdx]}` alt=`${rdz}`  width="100%")
+     - }

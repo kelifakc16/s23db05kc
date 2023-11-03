@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to  #{title} page
+
+  .container-fluid
+  .row
+    -
+      const results = [
+        { employeeID: 'e123', year: 2020, team: 'Blue' },
+        { employeeID: 'e234', year: 2019, team: 'Red' },
+        { employeeID: 'e456', year: 2022, team: 'Black' }
+      ]
+    -  
+    each employee,idx in results 
+     .col-sm-2(onclick=`buy(${idx})`)
+         p Employee ID: #{employee.employeeID}
+          p Enroll year: #{employee.year}
+          p Team: #{employee.team}
+
+  script.
+    function buy(index) {
+      alert(`You purchased item ${index}.`);
+    }
+  

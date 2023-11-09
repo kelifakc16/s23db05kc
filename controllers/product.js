@@ -1,7 +1,14 @@
 var product = require('../models/product');
 // List of all Products
-exports.product_list = function (req, res) {
-    res.send('NOT IMPLEMENTED: Product list');
+exports.product_list = async function (req, res) {
+    try{
+        theProducts = await product.find();
+         res.send(theProducts);
+        }catch (err) {
+        res.status(500);
+        res.send(`{"error": ${err}}`);
+    }
+
 };
 
 // for a specific Product. 

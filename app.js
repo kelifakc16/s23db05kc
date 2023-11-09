@@ -3,12 +3,76 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var Product = require('./models/product');
+
+require('dotenv').config();
+const connectionString =
+  process.env.MONGO_CON
+mongoose = require('mongoose');
+mongoose.connect(connectionString);
+
+//Get the default connection
+var db = mongoose.connection;
+//Bind connection to error event
+db.on('error', console.error.bind(console, 'MongoDB connectionerror:'));
+db.once("open", function () {
+  console.log("Connection to DB succeeded")
+});
+
+// We can seed the collection if needed on server start
+async function recreateDB() {
+
+  // Delete everything
+  await Product.deleteMany();
+
+  let instance1 = new
+    Product({
+      name: "Bookshelf",
+      category: "Home Decor",
+      price: 10
+    });
+  let instance2 = new
+    Product({
+      name: "Desk",
+      category: "Furniture",
+      price: 15
+    });
+  let instance3 = new
+    Product({
+      name: "Mirror",
+      category: "Home Decor",
+      price: 5
+    });
+
+  instance1.save().then(doc => {
+    console.log("First object saved")
+  }
+  ).catch(err => {
+    console.error(err)
+  });
+  instance2.save().then(doc => {
+    console.log("Second object saved")
+  }
+  ).catch(err => {
+    console.error(err)
+  });
+  instance3.save().then(doc => {
+    console.log("Third object saved")
+  }
+  ).catch(err => {
+    console.error(err)
+  });
+}
+
+let reseed = true;
+if (reseed) { recreateDB(); }
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var employeesRouter = require('./routes/employees');
 var boardRouter = require('./routes/board');
 var chooseRouter = require('./routes/choose');
+var resourceRouter = require('./routes/resource');
 
 var app = express();
 
@@ -27,14 +91,15 @@ app.use('/users', usersRouter);
 app.use('/employees', employeesRouter);
 app.use('/board', boardRouter);
 app.use('/choose', chooseRouter);
+app.use('/resource', resourceRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

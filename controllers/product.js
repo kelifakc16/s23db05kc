@@ -17,8 +17,15 @@ exports.product_create_post = function (req, res) {
     res.send('NOT IMPLEMENTED: Product create POST');
 };
 // Handle Product delete form on DELETE. 
-exports.product_delete = function (req, res) {
-    res.send('NOT IMPLEMENTED: Product delete DELETE ' + req.params.id);
+exports.product_delete = async function (req, res) {
+    try {
+        result = await Product.findByIdAndDelete(req.params.id)
+        res.send(result)
+    } catch (error) {
+        res.status(500)
+        res.send(`{"error": document for id ${req.params.id} not found`);
+    }
+
 };
 
 
@@ -64,3 +71,15 @@ exports.product_update_put = async function (req, res) {
     }
 };
 
+exports.product_view_one_Page = async function (req, res) {
+    console.log("single view for id " + req.query.id)
+    try {
+        result = await Product.findById(req.query.id)
+        res.render('productDetail',
+            { title: 'Product Detail', toShow: result });
+    }
+    catch (err) {
+        res.status(500)
+        res.send(`{'error': '${err}'}`);
+    }
+};

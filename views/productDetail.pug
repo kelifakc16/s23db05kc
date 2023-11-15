@@ -1,0 +1,24 @@
+extends layout
+
+block content 
+    h1= title
+
+    - let productId = toShow._id
+    - let name = toShow.name
+    - let category = toShow.category
+    - let price = toShow.price
+    div
+        div.row
+        div(class='productAttr mr-3') Product ID is: 
+        div #{productId}
+        div.row
+        div(class='productAttr mr-3') Product Name is:
+        div #{name}
+        div.row
+        div(class='productAttr mr-3') Product Category is:
+        div #{category}
+        div.row
+        div(class='productAttr mr-3') Product Price is:
+        div #{price}
+
+

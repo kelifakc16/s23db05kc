@@ -13,8 +13,21 @@ exports.product_list = async function (req, res) {
 };
 
 // Handle Product create on POST. 
-exports.product_create_post = function (req, res) {
-    res.send('NOT IMPLEMENTED: Product create POST');
+exports.product_create_post = async function (req, res) {
+    let document = new Product();
+    // We are looking for a body, since POST does not have query parameters. 
+    // Even though bodies can be in many different formats, we will be picky // and require that it be a json object
+    // {"costume_type":"goat", "cost":12, "size":"large"}
+    document.name = req.body.name;
+    document.category = req.body.category;
+    document.price = req.body.price
+    try {
+        let result = await document.save();
+        res.send(result);
+    } catch (err) {
+        res.status(500);
+        res.send(`{"error": ${err}}`);
+    }
 };
 // Handle Product delete form on DELETE. 
 exports.product_delete = async function (req, res) {
@@ -82,4 +95,16 @@ exports.product_view_one_Page = async function (req, res) {
         res.status(500)
         res.send(`{'error': '${err}'}`);
     }
+};
+/* GET create costume page */
+exports.product_create_Page = async function (req, res) {
+    console.log("create view")
+    try {
+        res.render('productCreate', { title: 'Product Create' });
+    }
+    catch (err) {
+        res.status(500)
+        res.send(`{'error': '${err}'}`);
+    }
+
 };

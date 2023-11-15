@@ -12,6 +12,7 @@ router.get('/detail', product_controlers.product_view_one_Page);
 router.get('/create', product_controlers.product_create_Page);
 /* GET create update page */
 router.get('/update', product_controlers.product_update_Page);
-
+/* GET delete Product page */
+router.get('/delete', product_controlers.product_delete_Page);
 
 module.exports = router;

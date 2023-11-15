@@ -1,0 +1,50 @@
+extends layout
+block content
+    h1= title
+
+    if (toShow == null)
+        h2 No instance to delete
+    else
+        - let productId = toShow._id
+        - let name = toShow.name
+        - let category = toShow.category
+        - let price = toShow.price
+        - let actionid = "/resource/product/" + productId
+        script.
+            let actionid = "#{actionid}"
+        div
+            div.row
+                div(class='productAttr mr-3') Product ID is:
+                div #{productId}
+            div.row
+                div(class='productAttr mr-3') Product Name is:
+                div #{name}
+            div.row
+                div(class='productAttr mr-3') Product Category is:
+                div #{category}
+            div.row
+                div(class='productAttr mr-3') Product Price is:
+                div #{price}
+        button(class="btn btn-danger m-2" onclick="deleteOnid()") Delete
+        button(class="btn btn-secondary m-2" onclick="cancel()") Cancel
+        script.
+            function cancel() {
+                // Go back to the home page for the costume collection
+                window.location.href='/product';
+            }
+
+        script.
+            function deleteOnid() {
+                console.log("starting delete"); // delete first
+                fetch(actionid, {
+                    method: 'DELETE' // Don't need a body for the delete 
+                }).then((resp) => {
+                    return resp.json(); // or resp.text() or whatever the server sends 
+                }).then((body) => {
+                    alert("Delete succeeded");
+                    window.location.href='/product'; // TODO handle body
+                }).catch((error) => {
+                    // TODO handle error
+                    alert("Delete failed " + error);
+                });
+            }

@@ -1,18 +1,25 @@
+
 extends layout
 
 block content
   h1= title
-  
-  - let items = results
-  div(class="container-fluid")
-    div(class="row m-1")
-      each item in items
-        - let destination = `dispatch("/product/update?id=${item._id}")`
-        div(class="row-sm-2 m-1")
-          | Product #{item.name} (#{item.category}) is #{item.price}
-          button.btn.btn-primary.ml-1(onclick=destination) Update
 
+  - let items = results
+
+  div(class="container-fluid")
+  div(class="row m-1")
+    each item in items
+      - let update = `dispatch(\"/product/update?id=${item._id}\")`
+      - let details = `dispatch(\"/product/detail?id=${item._id}\")`
+      - let del = `dispatch(\"/product/delete?id=${item._id}\")`
+      - let create = `dispatch(\"/product/create")`
+      div(class="row-sm-2", class="m-1") Product #{item.name}(#{item.category}) is #{item.price}
+      div(class="row-sm-2", class="m-1")
+        button.btn(class="btn-primary m-1", onclick=update) Update
+        button.btn(class="btn-info m-1", onclick=details) Details
+        button.btn(class="btn-danger m-1", onclick=del) Delete
+        button.btn(class="btn-warning m-1", onclick=create) Create
   script.
     function dispatch(path){
-      window.location.href = path;
+      window.location.href=path
     }
